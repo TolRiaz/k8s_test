@@ -1,0 +1,19 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: win10
+spec:
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: win10
+    spec:
+      containers:
+      - name: win10
+        image: /root/.iso/win10_Pro_Ent_KOR.ISO
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 80
+          protocol: TCP
+

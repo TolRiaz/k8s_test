@@ -1,0 +1,41 @@
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  creationTimestamp: 2015-10-22T08:42:33Z
+  generation: 1
+  labels:
+    k8s-app: heapster
+    name: heapster
+    version: v6
+  name: heapster
+  namespace: kube-system
+  resourceVersion: "2250"
+  selfLink: /api/v1/namespaces/kube-system/replicationcontrollers/heapster
+  uid: d6a5d2ee-7898-11e5-8753-0016c2000115
+spec:
+  replicas: 1
+  selector:
+    k8s-app: heapster
+    version: v6
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        k8s-app: heapster
+        version: v6
+    spec:
+      containers:
+      - command:
+        - /heapster
+        - --source=kubernetes:http://212.xxx.xx.21:8888?insecure=true&auth=&inClusterConfig=false
+        - --sink=influxdb:http://monitoring-influxdb.kube-system.xxx.xxxx.net:8086
+        image: kubernetes/heapster:v0.18.2
+        imagePullPolicy: IfNotPresent
+        name: heapster
+        resources: {}
+        terminationMessagePath: /dev/termination-log
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+status:
+  observedGeneration: 1
+  replicas: 1

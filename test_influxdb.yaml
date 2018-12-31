@@ -1,0 +1,54 @@
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  creationTimestamp: 2015-10-22T08:42:33Z
+  generation: 1
+  labels:
+    name: influxGrafana
+  name: infludb-grafana
+  namespace: kube-system
+  resourceVersion: "2249"
+  selfLink: /api/v1/namespaces/kube-system/replicationcontrollers/infludb-grafana
+  uid: d6ab1f6e-7898-11e5-8753-0016c2000115
+spec:
+  replicas: 1
+  selector:
+    name: influxGrafana
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        name: influxGrafana
+    spec:
+      containers:
+      - image: kubernetes/heapster_influxdb:v0.4
+        imagePullPolicy: IfNotPresent
+        name: influxdb
+        ports:
+        - containerPort: 8083
+          hostPort: 8083
+          protocol: TCP
+        - containerPort: 8086
+          hostPort: 8086
+          protocol: TCP
+        resources: {}
+        terminationMessagePath: /dev/termination-log
+      - image: grafana/grafana:2.1.0
+        imagePullPolicy: IfNotPresent
+        name: grafana
+        ports:
+        - containerPort: 3000
+          protocol: TCP
+        resources: {}
+        terminationMessagePath: /dev/termination-log
+        volumeMounts:
+        - mountPath: /var/lib/grafana
+          name: grafana-store
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      volumes:
+      - emptyDir: {}
+        name: grafana-store
+status:
+  observedGeneration: 1
+  replicas: 1
