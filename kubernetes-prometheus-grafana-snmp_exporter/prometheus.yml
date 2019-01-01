@@ -1,0 +1,103 @@
+# Copyright (c) 2016 Kazumasa Kohtaka. All rights reserved.
+# This file is available under the MIT license.
+
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: monitoring
+  labels:
+    name: monitoring
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: prometheus
+  namespace: monitoring
+spec:
+  type: NodePort
+  selector:
+    app: prometheus
+  ports:
+  - name: prometheus
+    port: 9090
+    targetPort: 9090
+    nodePort: 30301
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: prometheus
+  namespace: monitoring
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: prometheus
+  template:
+    metadata:
+      name: prometheus
+      labels:
+        app: prometheus
+    spec:
+      containers:
+      - name: prometheus
+        image: prom/prometheus:v2.2.1
+        args:
+        - '--config.file=/mnt/etc/prometheus.yml'
+        ports:
+        - containerPort: 9090
+        volumeMounts:
+        - name: config-volume
+          mountPath: /mnt/etc/
+        - name: data-volume
+          mountPath: /mnt/data/
+        - name: secrets-volume
+          mountPath: /var/run/secrets
+      volumes:
+      - name: config-volume
+        configMap:
+          name: prometheus-config
+      - name: data-volume
+        emptyDir: {}
+      - name: secrets-volume
+        hostPath:
+          path: /var/run/secrets
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: prometheus-config
+  namespace: monitoring
+data:
+  prometheus.yml: |
+    global:
+      scrape_interval:     60s
+      evaluation_interval: 60s
+
+    scrape_configs:
+    - job_name: 'snmp-exporter'
+      tls_config:
+        ca_file: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+      bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
+      static_configs:
+        - labels:
+            type: cisco
+          targets:
+            - '192.168.0.100'
+        - labels:
+            type: raspi
+          targets:
+            - '192.168.0.31'
+      metrics_path: /snmp
+      relabel_configs:
+        - source_labels: [__address__]
+          target_label: __param_target
+        - source_labels: [__param_target]
+          target_label: instance
+        - source_labels: [type]
+          target_label: __param_module
+        - source_labels: [type]
+          target_label: type
+        - target_label: __address__
+          replacement: 'snmp-exporter-clusterip.monitoring.svc.cluster.local:9116'
+
