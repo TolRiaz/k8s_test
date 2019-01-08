@@ -1,0 +1,99 @@
+influxdb-7b878d8bbb-fc9zv
+monitoring-influxdb-8b7d57f5c-jhtzx
+Name:               influxdb-7b878d8bbb-fc9zv
+Namespace:          kube-system
+Priority:           0
+PriorityClassName:  <none>
+Node:               kube-node1/220.149.13.191
+Start Time:         Mon, 07 Jan 2019 04:04:51 -0500
+Labels:             app=influxdb
+                    pod-template-hash=7b878d8bbb
+                    task=monitoring
+Annotations:        <none>
+Status:             Running
+IP:                 10.46.0.7
+Controlled By:      ReplicaSet/influxdb-7b878d8bbb
+Containers:
+  influxdb:
+    Container ID:   docker://50e463f2459d9f7d07a8db8f08c6c3090bae6c9b3b50511c3c436a7ffc69e750
+    Image:          influxdb
+    Image ID:       docker-pullable://influxdb@sha256:a06f6517d1151ccf2805e337552453ecc6942eb2259e3116cb869c296fd0bcd2
+    Port:           <none>
+    Host Port:      <none>
+    State:          Running
+      Started:      Mon, 07 Jan 2019 04:04:55 -0500
+    Ready:          True
+    Restart Count:  0
+    Environment:    <none>
+    Mounts:
+      /var/run/secrets/kubernetes.io/serviceaccount from default-token-ht5dx (ro)
+Conditions:
+  Type              Status
+  Initialized       True 
+  Ready             True 
+  ContainersReady   True 
+  PodScheduled      True 
+Volumes:
+  default-token-ht5dx:
+    Type:        Secret (a volume populated by a Secret)
+    SecretName:  default-token-ht5dx
+    Optional:    false
+QoS Class:       BestEffort
+Node-Selectors:  <none>
+Tolerations:     node.kubernetes.io/not-ready:NoExecute for 300s
+                 node.kubernetes.io/unreachable:NoExecute for 300s
+Events:
+  Type    Reason     Age   From                 Message
+  ----    ------     ----  ----                 -------
+  Normal  Scheduled  17m   default-scheduler    Successfully assigned kube-system/influxdb-7b878d8bbb-fc9zv to kube-node1
+  Normal  Pulling    17m   kubelet, kube-node1  pulling image "influxdb"
+  Normal  Pulled     17m   kubelet, kube-node1  Successfully pulled image "influxdb"
+  Normal  Created    17m   kubelet, kube-node1  Created container
+  Normal  Started    17m   kubelet, kube-node1  Started container
+Name:               monitoring-influxdb-8b7d57f5c-jhtzx
+Namespace:          kube-system
+Priority:           0
+PriorityClassName:  <none>
+Node:               kube-node1/220.149.13.191
+Start Time:         Sun, 06 Jan 2019 11:33:48 -0500
+Labels:             k8s-app=influxdb
+                    pod-template-hash=8b7d57f5c
+                    task=monitoring
+Annotations:        <none>
+Status:             Running
+IP:                 10.46.0.6
+Controlled By:      ReplicaSet/monitoring-influxdb-8b7d57f5c
+Containers:
+  influxdb:
+    Container ID:   docker://dfb1712e86188108fa03030285c1da5e6a6b8479824de31c779efb5dc81a771a
+    Image:          k8s.gcr.io/heapster-influxdb-amd64:v1.5.2
+    Image ID:       docker-pullable://k8s.gcr.io/heapster-influxdb-amd64@sha256:06f3919887956ce5f5a693b96e7c54c80f54253f353fed8234da3d51dddef7e1
+    Port:           <none>
+    Host Port:      <none>
+    State:          Running
+      Started:      Sun, 06 Jan 2019 11:33:49 -0500
+    Ready:          True
+    Restart Count:  0
+    Environment:    <none>
+    Mounts:
+      /data from influxdb-storage (rw)
+      /var/run/secrets/kubernetes.io/serviceaccount from default-token-ht5dx (ro)
+Conditions:
+  Type              Status
+  Initialized       True 
+  Ready             True 
+  ContainersReady   True 
+  PodScheduled      True 
+Volumes:
+  influxdb-storage:
+    Type:    EmptyDir (a temporary directory that shares a pod's lifetime)
+    Medium:  
+  default-token-ht5dx:
+    Type:        Secret (a volume populated by a Secret)
+    SecretName:  default-token-ht5dx
+    Optional:    false
+QoS Class:       BestEffort
+Node-Selectors:  <none>
+Tolerations:     node.kubernetes.io/not-ready:NoExecute for 300s
+                 node.kubernetes.io/unreachable:NoExecute for 300s
+Events:          <none>

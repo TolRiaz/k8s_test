@@ -83,11 +83,13 @@ data:
         - labels:
             type: cisco
           targets:
-            - '192.168.0.100'
+            - '10.46.0.10'
+            - '10.40.0.1'
         - labels:
             type: raspi
           targets:
-            - '192.168.0.31'
+            - '10.46.0.10'
+            - '10.40.0.1'
       metrics_path: /snmp
       relabel_configs:
         - source_labels: [__address__]

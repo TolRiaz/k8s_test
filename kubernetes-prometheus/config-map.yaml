@@ -146,43 +146,40 @@ data:
         - source_labels: [__meta_kubernetes_service_name]
           action: replace
           target_label: kubernetes_name
----
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: prometheus-config
-  namespace: monitoring
-data:
-  prometheus.yml: |
-    global:
-      scrape_interval:     60s
-      evaluation_interval: 60s
 
     scrape_configs:
-    - job_name: 'snmp-exporter'
-      tls_config:
-        ca_file: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
-      bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
-      static_configs:
-        - labels:
-            type: cisco
-          targets:
-            - '192.168.0.100'
-        - labels:
-            type: raspi
-          targets:
-            - '192.168.0.31'
-      metrics_path: /snmp
-      relabel_configs:
-        - source_labels: [__address__]
-          target_label: __param_target
-        - source_labels: [__param_target]
-          target_label: instance
-        - source_labels: [type]
-          target_label: __param_module
-        - source_labels: [type]
-          target_label: type
-        - target_label: __address__
-          replacement: 'snmp-exporter-clusterip.monitoring.svc.cluster.local:9116'
+      - job_name: 'blackbox'
+        metrics_path: /probe
+        params:
+          module: [http_2xx]
+        static_configs:
+          - targets:
+            - http://localhost:8080
+            - http://prometheus.io    # Target to probe with http.
+            - https://prometheus.io   # Target to probe with https.
+            - http://example.com:8080 # Target to probe with http on port 8080.
+        relabel_configs:
+          - source_labels: [__address__]
+            target_label: __param_target
+          - source_labels: [__param_target]
+            target_label: instance
+          - target_label: __address__
+            replacement: localhost:9115
 
-                              
+
+    scrape_configs:
+      - job_name: 'snmp'
+        static_configs:
+          - targets:
+            - 220.149.13.191 # SNMP device.
+            - 220.149.13.192 # SNMP device.
+        metrics_path: /snmp
+        params:
+          module: [if_mib]
+        relabel_configs:
+          - source_labels: [__address__]
+            target_label: __param_target
+          - source_labels: [__param_target]
+            target_label: instance
+          - target_label: __address__
+            replacement: localhost:9116  # The SNMP exporter's real hostname:port.

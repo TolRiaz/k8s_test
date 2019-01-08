@@ -2,6 +2,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: prometheus-service
+  namespace: monitoring
 spec:
   selector: 
     app: prometheus-server
@@ -10,3 +11,4 @@ spec:
     - port: 8080
       targetPort: 9090 
       nodePort: 30023
+  externalIPs: ['220.149.13.191']

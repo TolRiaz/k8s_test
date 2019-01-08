@@ -1,0 +1,51 @@
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  labels:
+    name: influxGrafana
+  name: influxdb-grafana
+  namespace: kube-system
+spec:
+  replicas: 1
+  selector:
+    name: influxGrafana
+  template:
+    metadata:
+      labels:
+        name: influxGrafana
+    spec:
+      nodeSelector:
+        role: monitor
+      containers:
+      - name: influxdb
+        image: kubernetes/heapster_influxdb:v0.5
+        volumeMounts:
+        - mountPath: /data
+          name: influxdb-storage
+      - name: heapster
+        image: kubernetes/heapster:canary
+        imagePullPolicy: Always
+        command:
+        - /heapster
+        - --source=kubernetes:http://172.31.7.28:8080
+        - --sink=influxdb:http://127.0.0.1:8086
+      - name: grafana
+        image: kubernetes/heapster_grafana:v2.1.0
+        ports: 
+        - containerPort: 3000
+          hostPort: 3000
+        env:
+          - name: INFLUXDB_SERVICE_URL
+            value: http://127.0.0.1:8086
+        volumeMounts:
+        - mountPath: /var
+          name: grafana-storage
+      volumes:
+      - name: influxdb-storage
+        source:
+          hostDir:
+            path: /var/lib/monitor/influxdb
+      - name: grafana-storage
+        source:
+          hostDir:
+            path: /var/lib/monitor/grafana

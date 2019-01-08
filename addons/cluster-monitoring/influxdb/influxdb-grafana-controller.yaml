@@ -74,6 +74,7 @@ spec:
               value: Admin
             - name: GF_SERVER_ROOT_URL
               value: /api/v1/namespaces/kube-system/services/monitoring-grafana/proxy/
+#              value: /api/v1/namespaces/influxdb/services/monitoring-grafana/proxy/
           ports:
           - name: ui
             containerPort: 3000
