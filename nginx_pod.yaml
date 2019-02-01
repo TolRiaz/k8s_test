@@ -3,7 +3,7 @@ kind: ReplicationController
 metadata:
   name: nginx
 spec:
-  replicas: 2
+  replicas: 4
   selector:
     app: nginx
   template:
