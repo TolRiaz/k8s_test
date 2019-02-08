@@ -38,7 +38,7 @@ spec:
         -  --v=5
         -  --logtostderr
         -  --kubelet-port=10250
-        -  --metric-resolution=30s
+        -  --metric-resolution=5s
         imagePullPolicy: Always
         volumeMounts:
         - name: tmp-dir
