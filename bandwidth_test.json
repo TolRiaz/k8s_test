@@ -1,0 +1,19 @@
+{
+    "kind": "Pod",
+    "spec": {
+        "containers": [
+            {
+                "image": "nginx",
+                "name": "nginx"
+            }
+        ]
+    },
+    "apiVersion": "v1",
+    "metadata": {
+        "name": "iperf-fast",
+        "annotations": {
+            "kubernetes.io/ingress-bandwidth": "10000M",
+            "kubernetes.io/egress-bandwidth": "10000M"
+        }
+    }
+}
