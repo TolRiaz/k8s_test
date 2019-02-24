@@ -6,7 +6,7 @@ metadata:
     kubernetes.io/ingress-bandwidth: "500M"
     kubernetes.io/egress-bandwidth: "500M"
 spec:
-  replicas: 2
+  replicas: 4
   template:
     metadata:
       labels:
@@ -19,5 +19,5 @@ spec:
         ports:
         - containerPort: 80
           protocol: TCP
-      nodeSelector:
-        kubernetes.io/hostname: "kube-node2"
+#      nodeSelector:
+#        kubernetes.io/hostname: "kube-node2"
