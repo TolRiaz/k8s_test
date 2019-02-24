@@ -19,8 +19,8 @@ data:
           summary: High Memory Usage
   prometheus.yml: |-
     global:
-      scrape_interval: 5s
-      evaluation_interval: 5s
+      scrape_interval: 10s
+      evaluation_interval: 10s
     rule_files:
       - /etc/prometheus/prometheus.rules
     alerting:
@@ -147,62 +147,27 @@ data:
           action: replace
           target_label: kubernetes_name
 
-      - job_name: 'blackbox'
 
-        tls_config:
-          ca_file: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
-        bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
-
-        params:
-          module: [http_2xx]
-        static_configs:
-          - targets:
-              - '10.34.0.6' # SNMP device.
-              - '10.34.0.1' # SNMP device.
-              - '10.46.0.3' # SNMP device.
-              - '10.44.0.0' # SNMP device.
-        metrics_path: /probe
-        relabel_configs:
-          - source_labels: [__address__]
-            target_label: __param_target
-          - source_labels: [__param_target]
-            target_label: instance
-          - target_label: __address__
-            replacement: '10.143.148.216:9115'
-
-
-#      - job_name: 'snmp-exporter'
+#      - job_name: 'blackbox'
 #
 #        tls_config:
 #          ca_file: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
 #        bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
 #
+#        params:
+#          module: [http_2xx]
 #        static_configs:
-#          - labels:
-#              type: cisco
-#            targets:
+#          - targets:
 #              - '10.34.0.6' # SNMP device.
 #              - '10.34.0.1' # SNMP device.
 #              - '10.46.0.3' # SNMP device.
 #              - '10.44.0.0' # SNMP device.
-#        metrics_path: /snmp
-#        params:
-#          module: [if_mib]
+#        metrics_path: /probe
 #        relabel_configs:
 #          - source_labels: [__address__]
 #            target_label: __param_target
 #          - source_labels: [__param_target]
 #            target_label: instance
-#          - source_labels: [type]
-#            target_label: __param_module
-#          - source_labels: [type]
-#            target_label: type
 #          - target_label: __address__
-#            replacement: '10.136.251.182:9116'
-	
+#            replacement: '10.143.148.216:9115'
 
-#            replacement: 'snmp-exporter-clusterip.monitoring.svc.cluster.local:9116'
-#            replacement: localhost:9116  # The SNMP exporter's real hostname:port.
-#    scrape_configs:
-#        metrics_path: /probe
-#        metrics_path: /snmp

@@ -1,10 +1,10 @@
 apiVersion: extensions/v1beta1
-kind: Deployment
+kind: Deployment 
 metadata:
-  name: nginx
+  name: bandwidth-test
   annotations: 
-    kubernetes.io/ingress-bandwidth: "10000M"
-    kubernetes.io/egress-bandwidth: "10000M"
+    kubernetes.io/ingress-bandwidth: "500M"
+    kubernetes.io/egress-bandwidth: "500M"
 spec:
   replicas: 2
   template:
@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: bandwidth-test
-        image: nginx
+        image: tolriaz/iperf
         ports:
         - containerPort: 80
           protocol: TCP
