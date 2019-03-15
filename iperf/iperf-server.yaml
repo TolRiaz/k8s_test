@@ -24,7 +24,7 @@ spec:
 kind: Service
 apiVersion: v1
 metadata:
-  name: iperf-server
+  name: iperf
 spec:
   selector:
     app: iperf-server
@@ -33,5 +33,5 @@ spec:
     protocol: TCP
     port: 80
     targetPort: 80
-  externalIPs:
-  - 220.149.13.191
+  externalIPs: ["220.149.13.191"]
+
