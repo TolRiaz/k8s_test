@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
     name: iperf-server
 spec:
-    replicas: 3
+    replicas: 1
     template:
         metadata:
             name: iperf-server
@@ -12,7 +12,7 @@ spec:
         spec:
             containers:
             - name: server
-              image: tolriaz/iperf:SC
+              image: tolriaz/iperf:S
               ports:
               - name: http-port
                 containerPort: 80

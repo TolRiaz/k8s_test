@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
     name: iperf-client
 spec:
-    replicas: 3
+    replicas: 1
     template:
         metadata:
             name: iperf-client
@@ -12,7 +12,7 @@ spec:
         spec:
             containers:
             - name: test
-              image: tolriaz/iperf:SC
+              image: tolriaz/iperf:C
               command: ["/bin/bash"]
               args: ["-c","cd /usr/share/nginx/html/ && ./client_iperf.sh 220.149.13.191 10 80"]
               ports:
