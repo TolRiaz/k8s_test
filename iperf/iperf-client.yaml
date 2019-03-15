@@ -14,7 +14,7 @@ spec:
             - name: test
               image: tolriaz/iperf:SC
               command: ["/bin/bash"]
-              args: ["-c","cd /usr/share/nginx/html/ && ./client_iperf.sh 220.149.13.179 10"]
+              args: ["-c","cd /usr/share/nginx/html/ && ./client_iperf.sh 220.149.13.191 10 80"]
               ports:
               - name: http-port
                 containerPort: 80
