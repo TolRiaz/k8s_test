@@ -1,0 +1,37 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+    name: iperf-server
+spec:
+    replicas: 1
+    template:
+        metadata:
+            name: iperf-server
+            labels:
+                app: iperf-server
+        spec:
+            containers:
+            - name: server
+              image: tolriaz/iperf:SC
+              ports:
+              - name: http-port
+                containerPort: 80
+              resources:
+                  requests:
+                      cpu: 200m
+
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: iperf-server
+spec:
+  selector:
+    app: iperf-server
+  ports:
+  - name: http
+    protocol: TCP
+    port: 80
+    targetPort: 80
+  externalIPs:
+  - 220.149.13.191
