@@ -35,3 +35,17 @@ spec:
     targetPort: 80
   externalIPs: ["220.149.13.191"]
 
+---
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+    name: iperf
+spec:
+    scaleTargetRef:
+        apiVersion: extensions/v1beta1
+        kind: Deployment
+        name: iperf-server
+    minReplicas: 1
+    maxReplicas: 100
+    targetCPUUtilizationPercentage: 50
+
