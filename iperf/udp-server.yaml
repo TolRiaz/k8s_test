@@ -1,0 +1,34 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+    name: udp-server
+spec:
+    replicas: 4
+    template:
+        metadata:
+            name: udp-server
+            labels:
+                app: udp-server
+        spec:
+            containers:
+            - name: udp-server
+              image: tolriaz/iperf:S
+              imagePullPolicy: Always
+              ports:
+              - containerPort: 10001
+                protocol: UDP
+
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: udp-svc
+spec:
+  type: LoadBalancer
+  sessionAffinity: ClientIP
+  selector:
+    app: udp-server
+  ports:
+  - protocol: UDP
+    port: 10001
+  externalIPs: ["220.149.13.191"]

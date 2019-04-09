@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
     name: itest
 spec:
-    replicas: 30
+    replicas: 1
     template:
         metadata:
             name: itest
@@ -14,7 +14,7 @@ spec:
             - name: itest
               image: tolriaz/iperf:TCP
               command: ["/bin/bash"]
-              args: ["-c","cd /usr/share/nginx/html/ && ./client_iperf.sh 220.149.13.192 10 30024"]
+              args: ["-c","cd /usr/share/nginx/html/ && ./client_iperf.sh 220.149.13.184 1 10001"]
               ports:
               - name: http-port
                 containerPort: 80
