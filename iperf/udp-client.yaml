@@ -1,23 +1,24 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-    name: iperf-client
+    name: udp-client
 spec:
-    replicas: 30
+    replicas: 50
     template:
         metadata:
-            name: iperf-client
+            name: udp-client
             labels:
-                app: iperf-client
+                app: udp-client
         spec:
             containers:
             - name: test
               image: tolriaz/iperf
               command: ["/bin/bash"]
-              args: ["-c","cd /usr/share/nginx/html/ && ./client_iperf.sh 220.149.13.191 10 5001"]
+              args: ["-c","cd /usr/share/nginx/html/ && ./client_iperf.sh 220.149.13.190 10 30000"]
               ports:
               - name: http-port
                 containerPort: 80
               resources:
                   requests:
                       cpu: 200m
+
