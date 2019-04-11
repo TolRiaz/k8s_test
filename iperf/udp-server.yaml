@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
     name: udp-server
 spec:
-    replicas: 4
+    replicas: 1
     template:
         metadata:
             name: udp-server
@@ -17,6 +17,9 @@ spec:
               ports:
               - containerPort: 10001
                 protocol: UDP
+              resources:
+                  requests:
+                      cpu: 200m
 
 ---
 kind: Service
@@ -32,3 +35,18 @@ spec:
   - protocol: UDP
     port: 10001
     nodePort: 30000
+
+---
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+    name: udp-server
+spec:
+    scaleTargetRef:
+        apiVersion: extensions/v1beta1
+        kind: Deployment
+        name: udp-server
+    minReplicas: 1
+    maxReplicas: 100
+    targetCPUUtilizationPercentage: 50
+

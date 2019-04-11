@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
     name: udp-client
 spec:
-    replicas: 50
+    replicas: 70
     template:
         metadata:
             name: udp-client
@@ -14,11 +14,10 @@ spec:
             - name: test
               image: tolriaz/iperf
               command: ["/bin/bash"]
-              args: ["-c","cd /usr/share/nginx/html/ && ./client_iperf.sh 220.149.13.190 10 30000"]
+              args: ["-c","cd /usr/share/nginx/html/ && ./client_iperf.sh 220.149.13.193 5 30000"]
               ports:
               - name: http-port
                 containerPort: 80
               resources:
                   requests:
                       cpu: 200m
-
