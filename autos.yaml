@@ -2,8 +2,11 @@ apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
     name: test
+    annotations:
+       kubernetes.io/ingress-bandwidth: 1M
+       kubernetes.io/egress-bandwidth: 1M
 spec:
-    replicas: 3
+    replicas: 1
     template:
         metadata:
             name: test
@@ -12,7 +15,7 @@ spec:
         spec:
             containers:
             - name: test
-              image: gcr.io/google_containers/hpa-example
+              image: tolriaz/iperf:C
               ports:
               - name: http-port
                 containerPort: 80
@@ -20,15 +23,22 @@ spec:
                   requests:
                       cpu: 200m
 ---
-apiVersion: autoscaling/v1
+apiVersion: autoscaling/v2beta2
 kind: HorizontalPodAutoscaler
 metadata:
     name: test
 spec:
-    scaleTargetRef:
-        apiVersion: extensions/v1beta1
-        kind: Deployment
-        name: test
-    minReplicas: 1
-    maxReplicas: 15
-    targetCPUUtilizationPercentage: 100
+  scaleTargetRef:
+      apiVersion: apps/v1
+      kind: Deployment
+      name: test
+  minReplicas: 1
+  maxReplicas: 3
+  metrics:
+  - type: Pods
+    pods:
+      metric:
+        name: container_receive_1m
+      target:
+        type: AverageValue
+        averageValue: 100m
