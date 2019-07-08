@@ -1,23 +1,20 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-    name: itest
+    name: tcp-client
 spec:
     replicas: 1
     template:
         metadata:
-            name: itest
+            name: tcp-client
             labels:
-                app: itest
+                app: tcp-client
         spec:
             containers:
-            - name: itest
+            - name: test
               image: tolriaz/iperf:TCP
               command: ["/bin/bash"]
-              args: ["-c","cd /usr/share/nginx/html/ && ./client_iperf.sh 220.149.13.181 1 30000"]
+              args: ["-c","cd /usr/share/nginx/html/ && ./client_iperf.sh 220.149.13.192 10 30021"]
               ports:
               - name: http-port
                 containerPort: 80
-              resources:
-                  requests:
-                      cpu: 200m

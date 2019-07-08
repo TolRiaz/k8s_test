@@ -27,14 +27,15 @@ apiVersion: v1
 metadata:
   name: udp-svc
 spec:
-  type: NodePort
+        #  type: NodePort
+  type: ClusterIP
   sessionAffinity: ClientIP
   selector:
     app: udp-server
   ports:
   - protocol: UDP
     port: 10001
-    nodePort: 30000
+    #    nodePort: 30000
 
 ---
 apiVersion: autoscaling/v1

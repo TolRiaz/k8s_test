@@ -1,0 +1,14 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: tcp-svc
+spec:
+  type: NodePort
+  sessionAffinity: ClientIP
+  selector:
+    app: udp-server
+  ports:
+  - protocol: TCP
+    port: 10002
+    nodePort: 30001
+
