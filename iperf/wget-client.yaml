@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
     name: wget-client
 spec:
-    replicas: 1
+    replicas: 10
     template:
         metadata:
             name: wget-client
@@ -15,10 +15,14 @@ spec:
               image: tolriaz/wget
               imagePullPolicy: Always
               command: ["/bin/bash"]
-              args: ["-c", "./wget.sh 60 220.149.13.191 60"]
+              args: ["-c", "./wget.sh 36000 220.149.13.191 5", "cat index.html"]
               ports:
               - name: http-port
-                containerPort: 5050
+                containerPort: 8080
+              resources:
+                requests:
+                  cpu: 500m
+
 ---
 kind: Service
 apiVersion: v1
@@ -31,6 +35,6 @@ spec:
     app: wget-client
   ports:
   - protocol: TCP
-    port: 5050
+    port: 8080
     nodePort: 30050
 
