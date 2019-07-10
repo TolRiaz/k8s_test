@@ -1,0 +1,29 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+    name: wget-web
+spec:
+    replicas: 1
+    template:
+        metadata:
+            name: wget-web
+            labels:
+                app: wget-web
+        spec:
+            containers:
+            - name: test
+              image: tolriaz/wget
+              imagePullPolicy: Always
+              command: ["/bin/bash"]
+              args: ["-c", "./wget.sh 60 220.149.13.191 5", "cat index.html"]
+              ports:
+              - name: http-port
+                containerPort: 8080
+              volumeMounts:
+              - name: wget-web-data
+                mountPath: /etc/wget-web-data/
+            volumes:
+            - name: wget-web-data
+              hostPath:
+                path: /tmp
+                type: Directory

@@ -1,0 +1,21 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+    name: wget-stream
+spec:
+    replicas: 1
+    template:
+        metadata:
+            name: wget-stream
+            labels:
+                app: wget-stream
+        spec:
+            containers:
+            - name: test
+              image: tolriaz/wget
+              imagePullPolicy: Always
+              command: ["/bin/bash"]
+              args: ["-c", "./wget.sh 36000 220.149.13.191:30090/video 5", "cat index.html"]
+              ports:
+              - name: http-port
+                containerPort: 8080
