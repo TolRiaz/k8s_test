@@ -15,7 +15,7 @@ spec:
               image: tolriaz/wget
               imagePullPolicy: Always
               command: ["/bin/bash"]
-              args: ["-c", "./wget.sh 60 220.149.13.191 5", "cat index.html"]
+              args: ["-c", "./wget.sh 3600 220.149.13.191 10 /etc/wget-web-data/index.html"]
               ports:
               - name: http-port
                 containerPort: 8080
